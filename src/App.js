@@ -1,24 +1,44 @@
-import React from 'react';
-import tailwindlogo from './tailwind-css-logo.svg';
-import reactlogo from './react-logo.png';
+import React, { useEffect, useState } from 'react';
+import moonIcon from './assets/images/moon.svg'
+import sunIcon from './assets/images/sun.svg'
+
+
 
 const App = () => {
+  const [darkTheme, setDarkTheme] = useState(false)
+
+
+  useEffect(() => {
+    if (window.localStorage.getItem('DarkTheme') !== null) {
+      setDarkTheme(JSON.parse(window.localStorage.getItem('DarkTheme')))
+    }
+  }, [])
+
+
+  useEffect(() => {
+    if (darkTheme === true) {
+      document.querySelector('html').classList.add('dark')
+    } else {
+      document.querySelector('html').classList.remove('dark')
+    }
+
+
+    window.localStorage.setItem('DarkTheme', JSON.stringify(darkTheme))
+
+  }, [darkTheme])
+
+
+
   return (
-    <div className="text-center mx-auto mt-40 mb-8 w-7/12">
-      <div className="flex flex-row justify-center">
-        <img src={reactlogo} alt="react" className="w-20 m-4" />
-        <img src={tailwindlogo} alt="tailwind" className="w-20 m-4" />
+    <div className="px-60 py-48 mx-auto text-center cursor-pointer  bg-gray-100 dark:bg-gray-700">
+      <div onClick={() => setDarkTheme(!darkTheme)}>
+        <img src={darkTheme ? sunIcon : moonIcon} alt="icon"
+          className="mx-auto m-6"
+        />
       </div>
-
-      <div className=" rounded-md bg-indigo-100 p-6 mb-6 ">
-        <h1 className="text-4xl font-semibold">Create React App + Tailwind CSS</h1>
-      </div>
-
-      <a
-        href="https://tailwindcss.com/docs/guides/create-react-app"
-        className="text-xl font-semibold text-blue-600"
-      >Refer docs for more.</a>
-
+      <h1 className="text-5xl rounded-md p-10 font-bold bg-white dark:bg-gray-600 text-gray-700 dark:text-white">
+        I ❤ TailwindCSS
+      </h1>
     </div>
   );
 }
